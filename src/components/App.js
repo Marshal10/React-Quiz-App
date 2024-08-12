@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
@@ -14,14 +12,7 @@ import Timer from "./Timer";
 import { useQuiz } from "../contexts/QuizContext";
 
 export default function App() {
-  const { dispatch, status, questions, index } = useQuiz();
-
-  useEffect(function () {
-    fetch("http://localhost:9000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
-  }, []);
+  const { status } = useQuiz();
 
   return (
     <div className="app">
@@ -34,7 +25,7 @@ export default function App() {
         {status === "active" && (
           <>
             <Progress />
-            <Question question={questions[index]} />
+            <Question />
             <Footer>
               <Timer />
               <NextButton />

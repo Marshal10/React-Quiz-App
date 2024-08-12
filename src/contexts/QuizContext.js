@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 
 const QuizContext = createContext();
 
@@ -89,6 +89,13 @@ function QuizProvider({ children }) {
     (prev, curr) => prev + curr.points,
     0
   );
+
+  useEffect(function () {
+    fetch("http://localhost:9000/questions")
+      .then((res) => res.json())
+      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
+  }, []);
   return (
     <QuizContext.Provider
       value={{
